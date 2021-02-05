@@ -11,10 +11,7 @@ export class Provider extends Component {
 
     render(){
         const value = {
-            data: this.data,
-            actions: {
-                listCourses: this.listCourses
-            }
+            data: this.data
         }
             
         return (
@@ -23,23 +20,6 @@ export class Provider extends Component {
             </Context.Provider>
         );
     }
-
-    //attempting api call here instead of Data.js
-    listCourses = async () =>{
-        const response = await this.api('/courses', 'GET', null, true);
-        if (response.status === 200){
-            console.log('Successfully getting courses!')
-            console.log(response.status)
-            return response.json().then(data => data)
-        }
-        else if (response.status === 401) {
-            return null;
-        }
-        else {
-            throw new Error();
-        }
-    }
-
 }
 
 export const Consumer = Context.Consumer;

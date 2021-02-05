@@ -1,12 +1,30 @@
 import logo from './logo.svg';
 import './App.css';
-import React from 'react';
+import React, { Component } from 'react';
 import withContext from './Context';
 
-const getCourses = withContext(App)
+let listCourses = withContext(Component)
+console.log(listCourses)
 
 function App() {
-  console.log(getCourses.response)
+      // attempting api call here instead of Data.js
+    listCourses = async () =>{
+        const response = await this.data.getCourses();
+        console.log(response)
+        if (response.status === 200){
+            console.log('Successfully getting courses!')
+            return response.json().then(data => data)
+        }
+        else if (response.status === 401) {
+          console.log('Not getting courses!')
+          return null;
+        }
+        else {
+          console.log('Not getting courses!')
+          throw new Error();
+        }
+    }
+  // console.log(this.data.getCourses())
 
   return (
     <div className="App">
@@ -14,7 +32,7 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
           <ul>
               <li>
-                {getCourses.response}
+                {listCourses.response}
               </li>
             </ul>
           <a
