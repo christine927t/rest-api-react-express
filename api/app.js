@@ -5,6 +5,7 @@ const express = require('express');
 const morgan = require('morgan');
 const { sequelize, Sequelize } = require('./db');
 const routes = require('./routes');
+const cors = require('cors');
 
 
 // variable to enable global error logging
@@ -15,6 +16,9 @@ const app = express();
 
 // setup morgan which gives us http request logging
 app.use(morgan('dev'));
+
+//enable all CORS requests
+app.use(cors());
 
 //testing connection to the database
 console.log('Testing the connection to the database...');
