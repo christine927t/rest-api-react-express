@@ -1,7 +1,22 @@
 import logo from './logo.svg';
-import './App.css';
+// import '././styles/global.css';
 import React, { Component } from 'react';
+import { 
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link 
+} from 'react-router-dom';
+
 // import withContext from './Context';
+import Header from './components/Header';
+import CourseDetails from './components/CourseDetails';
+import Courses from './components/Courses';
+import CreateCourse from './components/CreateCourse';
+import UpdateCourse from './components/UpdateCourse';
+import UserSignIn from './components/UserSignIn';
+// import UserSignOut from './components/UserSignOut';
+import UserSignUp from './components/UserSignUp';
 
 export default class App extends Component {
   constructor() {
@@ -15,36 +30,26 @@ export default class App extends Component {
     const response = await fetch('http://localhost:5000/api/courses')
     const json = await response.json();
     this.setState({ courses: json })  
-    // .then(response => response.json())
-      // .then(responseData => {
-      //   this.setState({ courses: responseData.data });
-      //   console.log(responseData.data)
-      // })
-      // .catch(error => {
-      //   console.log('Error fetching and parsing data', error)
-      // })
   }
 
   render(){
-    console.log(this.state.courses);
+          console.log(this.state.courses);
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-            <ul>
-                <li>
-                </li>
-              </ul>
-            <a
-              className="App-link"
-              href="https://reactjs.org"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learn React
-            </a>
-          </header>
+      <Router>
+        <div>
+          <Header />
+
+          <Switch>
+            <Route path="/" component={Courses}/>
+            <Route path="/courses/:id" component={CourseDetails} />
+            <Route path="/courses/create" component={CreateCourse} />
+            <Route path="/courses/:id/update" component={UpdateCourse} />
+            <Route path="/signin" component={UserSignIn} />
+            <Route path="/signup" component={UserSignUp} />
+            {/* <Route path="/usersignout" component={UserSignOut} /> */}
+          </Switch>
         </div>
+      </Router>
     )
   }
 }

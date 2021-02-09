@@ -22,6 +22,8 @@
     "fetch": "^1.1.0",
     "morgan": "^1.9.0",
     "promise.prototype.finally": "^3.1.0",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
     "sequelize": "^6.3.5",
     "sqlite3": "^4.2.0"
   }
