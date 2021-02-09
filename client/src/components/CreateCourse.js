@@ -5,15 +5,15 @@
 // button that returns the user to the default route (i.e. the list of courses).
 
 import React, { Component } from 'react';
-import { 
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link 
-  } from 'react-router-dom';
+// import { 
+//     BrowserRouter as Router,
+//     Switch,
+//     Route,
+//     Link 
+//   } from 'react-router-dom';
 
 export default class CreateCourse extends Component {
-    render(){
+    render() {
         return (
             <div className="bounds course--detail">
                 <h1>Create Course</h1>
@@ -31,7 +31,7 @@ export default class CreateCourse extends Component {
                         <div className="grid-66">
                             <div className="course--header">
                                 <h4 className="course--label">Course</h4>
-                                <div><input id="title" name="title" type="text" className="input-title course--title--input" placeholder="Course title..." value=""/></div>
+                                <div><input id="title" name="title" type="text" className="input-title course--title--input" placeholder="Course title..." value="" /></div>
                                 <p>By Joe Smith</p>
                             </div>
                             <div className="course--description">
@@ -43,7 +43,7 @@ export default class CreateCourse extends Component {
                                 <ul className="course--stats--list">
                                     <li className="course--stats--list--item">
                                         <h4>Estimated Time</h4>
-                                        <div><input id="estimatedTime" name="estimatedTime" type="text" className="course--time--input" placeholder="Hours" value=""/></div>
+                                        <div><input id="estimatedTime" name="estimatedTime" type="text" className="course--time--input" placeholder="Hours" value="" /></div>
                                     </li>
                                     <li className="course--stats--list--item">
                                         <h4>Materials Needed</h4>
