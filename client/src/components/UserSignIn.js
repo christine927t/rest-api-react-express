@@ -8,6 +8,49 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 
 export default class UserSignIn extends Component {
+    state = {
+        emailAddress: '',
+        password: '',
+        errors: [],
+    }
+    render() {
+        const {
+            emailAddress,
+            password,
+            errors,
+        } = this.state;
+
+        return (
+            <div className="bounds">
+                <div className="grid-33 centered signin">
+                    <h1>Sign In</h1>
+                    <div>
+                        <form>
+                            <React.Fragment>
+                                <input id="emailAddress" name="emailAddress" type="text" className="" placeholder="Email Address" value={emailAddress} onChange={this.change} />
+                                <input id="password" name="password" type="password" className="" placeholder="Password" value={password} onChange={this.change} />
+                                <div className="grid-100 pad-bottom"><button className="button" type="submit" onClick={this.submit}>Sign In</button><button className="button button-secondary" onClick={this.cancel}>Cancel</button></div>
+                            </React.Fragment>
+                        </form>
+                    </div>
+                    <p>&nbsp;</p>
+                    <p>Don't have a user account? <Link to="/signin">Click here</Link> to sign up!</p>
+                </div>
+            </div>
+        )
+    }
+
+    change = (event) => {
+        const name = event.target.name;
+        const value = event.target.value;
+
+        this.setState(() => {
+            return {
+                [name]: value
+            }
+        })
+    }
+
     submit = () => {
         const { context } = this.props;
         const { emailAddress, password } = this.state;
@@ -27,22 +70,8 @@ export default class UserSignIn extends Component {
                 this.props.history.push('/error')
             })
     }
-    render() {
-        return (
-            <div className="bounds">
-                <div className="grid-33 centered signin">
-                    <h1>Sign In</h1>
-                    <div>
-                        <form>
-                            <div><input id="emailAddress" name="emailAddress" type="text" className="" placeholder="Email Address" value="" /></div>
-                            <div><input id="password" name="password" type="password" className="" placeholder="Password" value="" /></div>
-                            <div className="grid-100 pad-bottom"><button className="button" type="submit">Sign In</button><button className="button button-secondary" onclick="event.preventDefault(); location.href='index.html';">Cancel</button></div>
-                        </form>
-                    </div>
-                    <p>&nbsp;</p>
-                    <p>Don't have a user account? <Link to="/signin">Click here</Link> to sign up!</p>
-                </div>
-            </div>
-        )
+
+    cancel = () => {
+        this.props.history.push('/');
     }
 }

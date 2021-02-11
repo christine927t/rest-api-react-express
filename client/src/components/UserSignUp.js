@@ -17,6 +17,13 @@ export default class UserSignUp extends Component {
         confirmPassword: '',
         errors: [],
     }
+
+    // handleChange(event) {
+    //     this.handleChange = this.handleChange.bind(this);
+
+    //     this.setState({ firstName: event.target.firstName })
+
+    // }
     render() {
         const {
             firstName,
@@ -39,7 +46,7 @@ export default class UserSignUp extends Component {
                                 <input id="emailAddress" name="emailAddress" type="text" className="" placeholder="Email Address" value={emailAddress} onChange={this.change} />
                                 <input id="password" name="password" type="password" className="" placeholder="Password" value={password} onChange={this.change} />
                                 <input id="confirmPassword" name="confirmPassword" type="password" className="" placeholder="Confirm Password" value={confirmPassword} onChange={this.change} />
-                                <div className="grid-100 pad-bottom"><button className="button" type="submit" onClick={this.submit}>Sign Up</button><button className="button button-secondary" onClick={this.cancel}>Cancel</button></div>
+                                <div className="grid-100 pad-bottom"><button className="button" type="submit" onSubmit={this.submit}>Sign Up</button><button className="button button-secondary" onClick={this.cancel}>Cancel</button></div>
                             </React.Fragment>
                         </form>
                     </div>
@@ -82,12 +89,12 @@ export default class UserSignUp extends Component {
         console.log(user)
 
         context.data.createUser(user)
-            .then( errors => {
-                if (errors.length) { 
+            .then(errors => {
+                if (errors.length) {
                     this.setState({ errors });
                 } else {
                     context.actions.signIn(emailAddress, password)
-                        .then(() =>{
+                        .then(() => {
                             this.props.history.push('/');
                         })
                     console.log(`${firstName} ${lastName} is successfully signed up and authenticated!`);
