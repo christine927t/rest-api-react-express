@@ -24,7 +24,8 @@ export default class App extends Component {
   constructor() {
     super();
     this.state = {
-      courses: []
+      courses: [],
+      users: []
     };
   }
 

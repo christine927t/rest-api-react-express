@@ -5,6 +5,7 @@
 // route (i.e. the list of courses).
 
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom'
 
 export default class UserSignIn extends Component {
     submit = () => {
@@ -39,7 +40,7 @@ export default class UserSignIn extends Component {
                         </form>
                     </div>
                     <p>&nbsp;</p>
-                    <p>Don't have a user account? <a href="sign-up.html">Click here</a> to sign up!</p>
+                    <p>Don't have a user account? <Link to="/signin">Click here</Link> to sign up!</p>
                 </div>
             </div>
         )
