@@ -38,7 +38,7 @@ console.log('Testing the connection to the database...');
 
 //middleware
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded( {extended: true} ));
 
 // setup a friendly greeting for the root route
 app.get('/', (req, res) => {

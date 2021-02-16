@@ -1,12 +1,6 @@
-// This component provides the "Sign Up" screen by rendering a form that 
-// allows a user to sign up by creating a new account. The component also 
-// renders a "Sign Up" button that when clicked sends a POST request to the 
-// REST API's /api/users route and signs in the user. This component also 
-// renders a "Cancel" button that returns the user to the default route 
-// (i.e. the list of courses).
-
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import Form from './Form';
 
 export default class UserSignUp extends Component {
     state = {
@@ -18,12 +12,6 @@ export default class UserSignUp extends Component {
         errors: [],
     }
 
-    // handleChange(event) {
-    //     this.handleChange = this.handleChange.bind(this);
-
-    //     this.setState({ firstName: event.target.firstName })
-
-    // }
     render() {
         const {
             firstName,
@@ -31,25 +19,27 @@ export default class UserSignUp extends Component {
             emailAddress,
             password,
             confirmPassword,
-            // errors,
+            errors,
         } = this.state;
 
         return (
             <div className="bounds">
                 <div className="grid-33 centered signin">
                     <h1>Sign Up</h1>
-                    <div>
-                        <form>
+                    <Form
+                        cancel={this.cancel}
+                        errors={errors}
+                        submit={this.submit}
+                        submitButtonText="Sign Up"
+                        elements={() => (
                             <React.Fragment>
-                                <input id="firstName" name="firstName" type="text" className="" placeholder="First Name" value={firstName} onChange={this.change} />
-                                <input id="lastName" name="lastName" type="text" className="" placeholder="Last Name" value={lastName} onChange={this.change} />
-                                <input id="emailAddress" name="emailAddress" type="text" className="" placeholder="Email Address" value={emailAddress} onChange={this.change} />
-                                <input id="password" name="password" type="password" className="" placeholder="Password" value={password} onChange={this.change} />
-                                <input id="confirmPassword" name="confirmPassword" type="password" className="" placeholder="Confirm Password" value={confirmPassword} onChange={this.change} />
-                                <div className="grid-100 pad-bottom"><button className="button" type="submit" onSubmit={this.submit}>Sign Up</button><button className="button button-secondary" onClick={this.cancel}>Cancel</button></div>
+                                <input id="firstName" name="firstName" type="text" placeholder="First Name" value={firstName} onChange={this.change} />
+                                <input id="lastName" name="lastName" type="text" placeholder="Last Name" value={lastName} onChange={this.change} />
+                                <input id="emailAddress" name="emailAddress" type="text" placeholder="Email Address" value={emailAddress} onChange={this.change} />
+                                <input id="password" name="password" type="password" placeholder="Password" value={password} onChange={this.change} />
+                                <input id="confirmPassword" name="confirmPassword" type="password" placeholder="Confirm Password" value={confirmPassword} onChange={this.change} />
                             </React.Fragment>
-                        </form>
-                    </div>
+                        )} />
                     <p>&nbsp;</p>
                     <p>Already have a user account? <Link to="/signin">Click here</Link> to sign in!</p>
                 </div>
@@ -102,7 +92,7 @@ export default class UserSignUp extends Component {
             })
             .catch(err => {
                 console.log(err);
-                this.props.history.push('/error')
+                this.props.history.push('/')
             })
     }
 
