@@ -13,39 +13,32 @@ import axios from 'axios';
 export default class CourseDetails extends Component {
     state = {
         courses: {},
-        response: {},
         user: {}
     }
+
     componentDidMount() {
-        axios.get('http://localhost:5000/courses')
-            .then(response => response.json());
-            console.log(response.json())
-        if (response.status === 200) {
-            this.setState(()=> { 
-                return {
-                   courses: response
-                }
-             }) 
-             console.log(this.state.courses)
-            return response.json().then(data => data)
-        } else if (response.status === 400) {
-            return null;
-        } else {
-            throw new Error();
-    }}
+            axios.get('http://localhost:5000/api/courses/1')
+              .then(data => {
+                this.setState({ courses: data.data, user: data.data.User });
+                console.log(this.state.courses)
+                console.log(this.state.user)
+                console.log(this.state.courses.userId)
+              })
+        .catch(err => {
+            console.log(err)
+        })
+    }
 
     render() {        
         const { context } = this.props;
         const authUser = context.authenticatedUser
-        console.log(authUser)
-        // && authUser.id === course.userId
         return (
             <div>
                 <div className="actions--bar">
                     <div className="bounds">
-                    {authUser ?
+                    {authUser && authUser.id === this.state.courses.userId ?
                         <React.Fragment>
-                            <div className="grid-100"><span><Link className="button" to="/courses/${id}/update">Update Course</Link><Link className="button" to="/courses">Delete Course</Link></span><Link className="button button-secondary" to="/courses">Return to List</Link></div>
+                            <div className="grid-100"><span><Link className="button" to="/courses/{courses.id}/update">Update Course</Link><Link className="button" to="/courses">Delete Course</Link></span><Link className="button button-secondary" to="/courses">Return to List</Link></div>
                         </React.Fragment>
                     : 
                         <React.Fragment>

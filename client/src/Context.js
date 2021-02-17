@@ -49,7 +49,8 @@ export class Provider extends Component {
         this.setState({ authenticatedUser: null })
     }
 
-    async componentDidMount() {
+    
+    listCourses = async () => {
         const courses = await this.data.getCourses()
         if (courses !== null) {
             this.setState(()=> { 

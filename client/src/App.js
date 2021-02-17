@@ -11,6 +11,7 @@ import PrivateRoute from './PrivateRoute';
 import Header from './components/Header';
 import CourseDetails from './components/CourseDetails';
 import Courses from './components/Courses';
+import Course from './components/Course';
 import CreateCourse from './components/CreateCourse';
 import UpdateCourse from './components/UpdateCourse';
 import UserSignIn from './components/UserSignIn';

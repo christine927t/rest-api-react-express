@@ -6,23 +6,35 @@
 
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import Course from './Course';
 
 export default class Courses extends Component {
+
+    state = {
+        courses: []
+    }
+
+    componentDidMount() {
+            axios.get('http://localhost:5000/api/courses')
+              .then(data => {
+                this.setState({ courses: data.data, user: data.data.User });
+                console.log(this.state.courses)
+              })
+            .catch(err => {
+                console.log(err)
+            })
+    }
     render() {
         return (
+
             <div className="bounds">
                 <div className="grid-33"><Link className="course--module course--link" to="/courses/{id}">
                     <h4 className="course--label">Course</h4>
-                    <h3 className="course--title">Build a Basic Bookcase</h3>
-                </Link></div>
-                <div className="grid-33"><Link className="course--module course--link" to="/courses/{id}">
-                    <h4 className="course--label">Course</h4>
-                    <h3 className="course--title">Learn How to Program</h3>
-                </Link></div>
-                <div className="grid-33"><Link className="course--module course--link" to="/courses/{id}">
-                    <h4 className="course--label">Course</h4>
-                    <h3 className="course--title">Learn How to Test Programs</h3>
-                </Link></div>
+                    <Course data={this.state.courses} /></Link></div>
+                    {/* <h3 className="course--title"><Course data={this.state.courses} /></h3></Link></div> */}
+
+
                 <div className="grid-33"><Link className="course--module course--add--module" to="/courses/create">
                     <h3 className="course--add--title"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
                         viewBox="0 0 13 13" className="add">
