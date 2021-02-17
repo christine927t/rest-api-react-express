@@ -7,17 +7,51 @@
 // screen.
 
 import React, { Component } from 'react';
-import {
-    Link
-} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 export default class CourseDetails extends Component {
-    render() {
+    state = {
+        courses: {},
+        response: {},
+        user: {}
+    }
+    componentDidMount() {
+        axios.get('http://localhost:5000/courses')
+            .then(response => response.json());
+            console.log(response.json())
+        if (response.status === 200) {
+            this.setState(()=> { 
+                return {
+                   courses: response
+                }
+             }) 
+             console.log(this.state.courses)
+            return response.json().then(data => data)
+        } else if (response.status === 400) {
+            return null;
+        } else {
+            throw new Error();
+    }}
+
+    render() {        
+        const { context } = this.props;
+        const authUser = context.authenticatedUser
+        console.log(authUser)
+        // && authUser.id === course.userId
         return (
             <div>
                 <div className="actions--bar">
                     <div className="bounds">
-                        <div className="grid-100"><span><Link className="button" to="/courses/:id/update">Update Course</Link><Link className="button" to="/courses">Delete Course</Link></span><Link className="button button-secondary" to="/courses">Return to List</Link></div>
+                    {authUser ?
+                        <React.Fragment>
+                            <div className="grid-100"><span><Link className="button" to="/courses/${id}/update">Update Course</Link><Link className="button" to="/courses">Delete Course</Link></span><Link className="button button-secondary" to="/courses">Return to List</Link></div>
+                        </React.Fragment>
+                    : 
+                        <React.Fragment>
+                            <Link className="button button-secondary" to="/courses">Return to List</Link>
+                        </React.Fragment>
+                    }
                     </div>
                 </div>
                 <div className="bounds course--detail">

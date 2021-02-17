@@ -6,6 +6,7 @@
 
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
+import Form from './Form';
 
 export default class UserSignIn extends Component {
     state = {
@@ -25,15 +26,19 @@ export default class UserSignIn extends Component {
                 <div className="grid-33 centered signin">
                     <h1>Sign In</h1>
                     <div>
-                        <form>
-                            <React.Fragment>
-                                <input id="emailAddress" name="emailAddress" type="text" className="" placeholder="Email Address" value={emailAddress} onChange={this.change} />
-                                <input id="password" name="password" type="password" className="" placeholder="Password" value={password} onChange={this.change} />
-                                <div className="grid-100 pad-bottom"><button className="button" type="submit" onClick={this.submit}>Sign In</button><button className="button button-secondary" onClick={this.cancel}>Cancel</button></div>
-                            </React.Fragment>
-                        </form>
+                        <Form
+                            cancel={this.cancel}
+                            errors={errors}
+                            submit={this.submit}
+                            submitButtonText="Sign In"
+                            elements={() => (
+                                <React.Fragment>
+                                    <input id="emailAddress" name="emailAddress" type="text" placeholder="Email Address" value={emailAddress} onChange={this.change} />
+                                    <input id="password" name="password" type="password" placeholder="Password" value={password} onChange={this.change} />
+                                </React.Fragment>
+                            )}
+                        />
                     </div>
-                    <p>&nbsp;</p>
                     <p>Don't have a user account? <Link to="/signin">Click here</Link> to sign up!</p>
                 </div>
             </div>
@@ -61,7 +66,7 @@ export default class UserSignIn extends Component {
                         return { errors: ['Sign-in was unsuccessful'] }
                     })
                 } else {
-                    this.props.history.push('/authenticated');
+                    this.props.history.push('/');
                     console.log(`SUCCESS! ${emailAddress} is now signed in!`);
                 }
             })

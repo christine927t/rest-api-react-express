@@ -6,6 +6,7 @@ import {
   Switch,
   Route
 } from 'react-router-dom';
+import PrivateRoute from './PrivateRoute';
 
 import Header from './components/Header';
 import CourseDetails from './components/CourseDetails';
@@ -13,41 +14,28 @@ import Courses from './components/Courses';
 import CreateCourse from './components/CreateCourse';
 import UpdateCourse from './components/UpdateCourse';
 import UserSignIn from './components/UserSignIn';
-// import UserSignOut from './components/UserSignOut';
+import UserSignOut from './components/UserSignOut';
 import UserSignUp from './components/UserSignUp';
 
 import withContext from './Context';
 const UserSignInWithContext = withContext(UserSignIn);
 const UserSignUpWithContext = withContext(UserSignUp);
+const UserSignOutWithContext = withContext(UserSignOut);
+const HeaderWithContext = withContext(Header);
+const CourseDetailsWithContext = withContext(CourseDetails);
 
-// export default class App extends Component {
-//   constructor() {
-//     super();
-//     this.state = {
-//       courses: []
-//     };
-//   }
-
-//   async componentDidMount() {
-//     const response = await fetch('http://localhost:5000/api/courses')
-//     const json = await response.json();
-//     this.setState({ courses: json })
-//   }
-
-//   render() {
-//     console.log(this.state.courses);
 export default () => (
   <Router>
     <div>
-      <Header />
-
+      <HeaderWithContext />
       <Switch>
-        <Route path="/courses/:id/update" component={UpdateCourse} />
-        <Route path="/courses/:id" component={CourseDetails} />
-        <Route path="/courses/create" component={CreateCourse} />
+        {/* <PrivateRoute path="/authenticated" component={Authenticated} /> */}
+        <PrivateRoute path="/courses/:id/update" component={UpdateCourse} />
+        <PrivateRoute path="/courses/create" component={CreateCourse} />
+        <Route path="/courses/:id" component={CourseDetailsWithContext} />
         <Route path="/signin" component={UserSignInWithContext} />
         <Route path="/signup" component={UserSignUpWithContext} />
-        {/* <Route path="/usersignout" component={UserSignOut} /> */}
+        <Route path="/signout" component={UserSignOutWithContext} />
         <Route exact path="/" component={Courses} />
       </Switch>
     </div>

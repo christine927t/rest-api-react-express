@@ -40,7 +40,6 @@ export default class UserSignUp extends Component {
                                 <input id="confirmPassword" name="confirmPassword" type="password" placeholder="Confirm Password" value={confirmPassword} onChange={this.change} />
                             </React.Fragment>
                         )} />
-                    <p>&nbsp;</p>
                     <p>Already have a user account? <Link to="/signin">Click here</Link> to sign in!</p>
                 </div>
             </div>
@@ -66,7 +65,7 @@ export default class UserSignUp extends Component {
             lastName,
             emailAddress,
             password,
-            confirmPassword
+            confirmPassword,
         } = this.state;
 
         const user = {
@@ -82,6 +81,7 @@ export default class UserSignUp extends Component {
             .then(errors => {
                 if (errors.length) {
                     this.setState({ errors });
+                    return { errors: ['Sign-up was unsuccessful'] }    
                 } else {
                     context.actions.signIn(emailAddress, password)
                         .then(() => {

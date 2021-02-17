@@ -3,7 +3,6 @@ import config from './config';
 export default class Data {
     api(path, method = 'GET', body = null, requiresAuth = false, credentials = null) {
         const url = config.apiBaseUrl + path;
-
         const options = {
             method,
             headers: {
@@ -53,10 +52,22 @@ export default class Data {
         if (response.status === 201) {
             console.log('User successfully created');
             return [];
-        } else if (response.status === 401) {
+        } else if (response.status === 400) {
             return response.json().then(data => {
                 return data.errors;
             })
+        } else {
+            throw new Error();
+        }
+    }
+
+    async getCourses(courses) {
+        const response = await this.api('/courses', 'GET', null, false)
+        // const json = await response.json();
+        if (response.status === 200) {
+            return response.json().then(data => data)
+        } else if (response.status === 400) {
+            return null;
         } else {
             throw new Error();
         }
