@@ -7,10 +7,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import Course from './Course';
 
 export default class Courses extends Component {
-
     state = {
         courses: []
     }
@@ -26,15 +24,19 @@ export default class Courses extends Component {
             })
     }
     render() {
+        const results = this.state.courses;
+        console.log(results)
+        let courses = results.map(course => 
+            <div className="grid-33"><Link className="course--module course--link" to={`/courses/${course.id}`} key={course.id}>
+                <h4 className="course--label">Course</h4>
+                <h3 className="course--title" key={course.id}>{course.title} </h3>
+            </Link></div>
+        )
+
         return (
 
             <div className="bounds">
-                <div className="grid-33"><Link className="course--module course--link" to="/courses/{id}">
-                    <h4 className="course--label">Course</h4>
-                    <Course data={this.state.courses} /></Link></div>
-                    {/* <h3 className="course--title"><Course data={this.state.courses} /></h3></Link></div> */}
-
-
+                    {courses}
                 <div className="grid-33"><Link className="course--module course--add--module" to="/courses/create">
                     <h3 className="course--add--title"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
                         viewBox="0 0 13 13" className="add">

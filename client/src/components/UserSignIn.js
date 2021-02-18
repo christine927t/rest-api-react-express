@@ -39,7 +39,7 @@ export default class UserSignIn extends Component {
                             )}
                         />
                     </div>
-                    <p>Don't have a user account? <Link to="/signin">Click here</Link> to sign up!</p>
+                    <p>Don't have a user account? <Link to="/signup">Click here</Link> to sign up!</p>
                 </div>
             </div>
         )

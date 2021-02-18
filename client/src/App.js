@@ -11,7 +11,6 @@ import PrivateRoute from './PrivateRoute';
 import Header from './components/Header';
 import CourseDetails from './components/CourseDetails';
 import Courses from './components/Courses';
-import Course from './components/Course';
 import CreateCourse from './components/CreateCourse';
 import UpdateCourse from './components/UpdateCourse';
 import UserSignIn from './components/UserSignIn';
@@ -31,12 +30,13 @@ export default () => (
       <HeaderWithContext />
       <Switch>
         {/* <PrivateRoute path="/authenticated" component={Authenticated} /> */}
-        <PrivateRoute path="/courses/:id/update" component={UpdateCourse} />
+        <PrivateRoute path="/courses/{id}/update" component={UpdateCourse} />
         <PrivateRoute path="/courses/create" component={CreateCourse} />
         <Route path="/courses/:id" component={CourseDetailsWithContext} />
         <Route path="/signin" component={UserSignInWithContext} />
         <Route path="/signup" component={UserSignUpWithContext} />
         <Route path="/signout" component={UserSignOutWithContext} />
+        <Route path="/courses" Redirect to="/" component={Courses}/>
         <Route exact path="/" component={Courses} />
       </Switch>
     </div>

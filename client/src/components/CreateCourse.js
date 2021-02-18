@@ -5,6 +5,7 @@
 // button that returns the user to the default route (i.e. the list of courses).
 
 import React, { Component } from 'react';
+import Form from './Form';
 // import { 
 //     BrowserRouter as Router,
 //     Switch,
@@ -13,12 +14,34 @@ import React, { Component } from 'react';
 //   } from 'react-router-dom';
 
 export default class CreateCourse extends Component {
+    state = {
+        title: '',
+        description: '',
+        estimatedTime: '',
+        materialsNeeded: '',
+        errors: [],
+    }
+    
     render() {
+        const {
+            title,
+            description,
+            estimatedTime,
+            materialsNeeded,
+            errors
+        } = this.state; 
+
         return (
             <div className="bounds course--detail">
                 <h1>Create Course</h1>
                 <div>
-                    <div>
+                <Form
+                    cancel={this.cancel}
+                    errors={errors}
+                    submit={this.submit}
+                    submitButtonText="Create Course"
+                    elements={() => (
+                    {/* <div>
                         <h2 className="validation--errors--label">Validation errors</h2>
                         <div className="validation-errors">
                             <ul>
@@ -26,16 +49,21 @@ export default class CreateCourse extends Component {
                                 <li>Please provide a value for "Description"</li>
                             </ul>
                         </div>
-                    </div>
-                    <form>
+                    </div> */}
+                    // <div>
+
+                    <React.Fragment>
+                    <div>
                         <div className="grid-66">
                             <div className="course--header">
                                 <h4 className="course--label">Course</h4>
-                                <div><input id="title" name="title" type="text" className="input-title course--title--input" placeholder="Course title..." value="" /></div>
+                                
+                                <div><input id="title" name="title" type="text" className="input-title course--title--input" placeholder="Course title..." value={title} onChange={this.change} /></div>
                                 <p>By Joe Smith</p>
                             </div>
+                            
                             <div className="course--description">
-                                <div><textarea id="description" name="description" className="" placeholder="Course description..."></textarea></div>
+                                <div><textarea id="description" name="description" className="" placeholder="Course description..." value={description} onChange={this.change}></textarea></div>
                             </div>
                         </div>
                         <div className="grid-25 grid-right">
@@ -43,17 +71,21 @@ export default class CreateCourse extends Component {
                                 <ul className="course--stats--list">
                                     <li className="course--stats--list--item">
                                         <h4>Estimated Time</h4>
-                                        <div><input id="estimatedTime" name="estimatedTime" type="text" className="course--time--input" placeholder="Hours" value="" /></div>
+                                        <div><input id="estimatedTime" name="estimatedTime" type="text" className="course--time--input" placeholder="Hours" value={estimatedTime} onChange={this.change} /></div>
                                     </li>
                                     <li className="course--stats--list--item">
                                         <h4>Materials Needed</h4>
-                                        <div><textarea id="materialsNeeded" name="materialsNeeded" className="" placeholder="List materials..."></textarea></div>
+                                        <div><textarea id="materialsNeeded" name="materialsNeeded" className="" placeholder="List materials..." value={materialsNeeded} onChange={this.change}></textarea></div>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                         <div className="grid-100 pad-bottom"><button className="button" type="submit">Create Course</button><button className="button button-secondary" onclick="event.preventDefault(); location.href='index.html';">Cancel</button></div>
-                    </form>
+                        </div>
+                    </React.Fragment>
+                    
+                    )}
+                />
                 </div>
             </div>
         )
