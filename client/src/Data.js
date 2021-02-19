@@ -1,7 +1,9 @@
+// import { authenticateUser } from '../../api/routes';
 import config from './config';
 
 export default class Data {
     api(path, method = 'GET', body = null, requiresAuth = false, credentials = null) {
+        console.log(credentials)
         const url = config.apiBaseUrl + path;
         const options = {
             method,
@@ -20,20 +22,6 @@ export default class Data {
         }
         return fetch(url, options)
     }
-
-    // async getCourses(username, password) {
-    //     const response = await this.api('/courses', 'GET', null, true, { username, password });
-    //     if (response.status === 200) {
-    //         console.log('Successfully getting courses!')
-    //         return response.json().then(data => data)
-    //     }
-    //     else if (response.status === 401) {
-    //         return null;
-    //     }
-    //     else {
-    //         throw new Error();
-    //     }
-    // }
 
     async getUser(emailAddress, password) {
         const response = await this.api('/users', 'GET', null, true, { emailAddress, password });
@@ -61,13 +49,15 @@ export default class Data {
         }
     }
 
-    async getCourses(courses) {
-        const response = await this.api('/courses', 'GET', null, false)
-        // const json = await response.json();
-        if (response.status === 200) {
-            return response.json().then(data => data)
+    async createCourse(course, encodedCredentials) {
+        const response = await this.api('/courses', 'POST', course, true, { encodedCredentials });
+        if(response.status === 201) {
+            console.log('Course successfully created');
+            return [];
         } else if (response.status === 400) {
-            return null;
+            return response.json().then(data => {
+                return data.errors;
+            })
         } else {
             throw new Error();
         }

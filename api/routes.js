@@ -25,7 +25,9 @@ exports.authenticateUser = async (req, res, next) => {
     let message; //stores the error message to display
     const credentials = auth(req);
     if (credentials) { //checks if credentials are entered
+        console.log(credentials)
         user = await User.findOne({ where: { emailAddress: credentials.name } });
+        console.log(user)
         if (user) { //checks if user exists
             const authenticated = bcrypt.compareSync(credentials.pass, user.password);
             if (authenticated) { //checks if user/password passed authentication
