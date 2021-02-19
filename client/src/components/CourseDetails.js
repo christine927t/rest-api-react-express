@@ -12,20 +12,21 @@ import axios from 'axios';
 
 export default class CourseDetails extends Component {
     state = {
-        courses: [],
+        course: [],
         user: []
     }
 
     componentDidMount() {
-            axios.get(`http://localhost:5000/api/courses`)
+            axios.get(`http://localhost:5000/api/${this.props.match.url}`)
               .then(data => {
-                this.setState({ courses: data.data, user: data.data.User });
-                console.log(this.state.courses.title)
-                console.log(this.state.user)
-                console.log(this.state.courses.userId)
+                this.setState({ course: data.data, user: data.data.User });
+                console.log(this.props.match.url)
+                console.log(this.state.course.title)
+                console.log(this.state.user.firstName)
+                console.log(this.state.course.userId)
               })
-        .catch(err => {
-            console.log(err)
+                .catch(err => {
+                console.log(err)
         })
     }
 
@@ -33,46 +34,46 @@ export default class CourseDetails extends Component {
         const { context } = this.props;
         const authUser = context.authenticatedUser;
 
-        const results = this.state.courses;
-        console.log(results)
-        let courses = results.map(course => 
-            <div className="bounds course--detail">
-                <div className="grid-66">
-                    <div className="course--header">
-                        <h4 className="course--label">Course</h4>
-                        <h3 className="course--title" key={course.id}>{course.title} </h3>
-                        <p>{course.User.firstName} {course.User.lastName}</p>
-                    </div>
-                    <div className="course--description">
-                        <p>{course.description}</p>
-                    </div>
-                </div>
-                <div className="grid-25 grid-right">
-                    <div className="course--stats">
-                        <ul className="course--stats--list">
-                            <li className="course--stats--list--item">
-                                <h4>Estimated Time</h4>
-                                <h3>{course.estimatedTime}</h3>
-                            </li>
-                            <li className="course--stats--list--item">
-                                <h4>Materials Needed</h4>
-                                <ul>
-                                    <li>{course.materialsNeeded}</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        )
+//         const results = this.state.courses;
+//         console.log(results)
+//         let courses = results.map(course => 
+            // <div className="bounds course--detail">
+            //     <div className="grid-66">
+            //         <div className="course--header">
+            //             <h4 className="course--label">Course</h4>
+            //             <h3 className="course--title" key={course.id}>{course.title} </h3>
+            //             <p>{course.User.firstName} {course.User.lastName}</p>
+            //         </div>
+            //         <div className="course--description">
+            //             <p>{course.description}</p>
+            //         </div>
+            //     </div>
+            //     <div className="grid-25 grid-right">
+            //         <div className="course--stats">
+            //             <ul className="course--stats--list">
+            //                 <li className="course--stats--list--item">
+            //                     <h4>Estimated Time</h4>
+            //                     <h3>{course.estimatedTime}</h3>
+            //                 </li>
+            //                 <li className="course--stats--list--item">
+            //                     <h4>Materials Needed</h4>
+            //                     <ul>
+            //                         <li>{course.materialsNeeded}</li>
+            //                     </ul>
+            //                 </li>
+            //             </ul>
+            //         </div>
+            //     </div>
+            // </div>
+//         )
 
         return (
             <div>
                 <div className="actions--bar">
                     <div className="bounds">
-                    {authUser && authUser.id === this.state.courses.userId ?
+                    {authUser && authUser.id === this.state.course.userId ?
                         <React.Fragment>
-                            <div className="grid-100"><span><Link className="button" to="/courses/{courses.id}/update">Update Course</Link><Link className="button" to="/courses">Delete Course</Link></span><Link className="button button-secondary" to="/courses">Return to List</Link></div>
+                            <div className="grid-100"><span><Link className="button" to="/courses/{courses.id}/update">Update Course</Link><Link className="button" to="/courses" onClick={handleDelete}>Delete Course</Link></span><Link className="button button-secondary" to="/courses">Return to List</Link></div>
                         </React.Fragment>
                     : 
                         <React.Fragment>
@@ -81,9 +82,42 @@ export default class CourseDetails extends Component {
                     }
                     </div>
                 </div>
-                    {courses}
+                <div className="bounds course--detail">
+                    <div className="grid-66">
+                        <div className="course--header">
+                            <h4 className="course--label">Course</h4>
+                            <h3 className="course--title" key={this.state.course.id}>{this.state.course.title} </h3>
+                            <p>{this.state.user.firstName} {this.state.user.lastName}</p>
+                        </div>
+                        <div className="course--description">
+                            <p>{this.state.course.description}</p>
+                        </div>
+                    </div>
+                    <div className="grid-25 grid-right">
+                        <div className="course--stats">
+                            <ul className="course--stats--list">
+                                <li className="course--stats--list--item">
+                                    <h4>Estimated Time</h4>
+                                    <h3>{this.state.course.estimatedTime}</h3>
+                                </li>
+                                <li className="course--stats--list--item">
+                                    <h4>Materials Needed</h4>
+                                    <ul>
+                                        <li>{this.state.course.materialsNeeded}</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
         )
     }
 
+}
+
+function handleDelete(){
+    const { context } =this.props;
+    context.data.deleteCourse();
+    
 }

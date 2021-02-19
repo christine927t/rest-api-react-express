@@ -62,4 +62,17 @@ export default class Data {
             throw new Error();
         }
     }
+
+    async deleteCourse() {
+        const response = await this.api('/courses/:id', 'DELETE', null)
+        if (response.status === 204){
+            console.log('Course has been deleted');
+        } else if (response.status === 400) {
+            return response.json().then(data => {
+                return data.errors;
+            })
+        } else {
+            throw new Error();
+        }
+    }
 }
