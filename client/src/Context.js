@@ -15,15 +15,15 @@ export class Provider extends Component {
     }
 
     render() {
-        const { authenticatedUser, newCourse } = this.state;
+        const { authenticatedUser } = this.state;
         const value = {
             authenticatedUser,
-            newCourse,
+            // newCourse,
             data: this.data,
             actions: {
                 signIn: this.signIn,
                 signOut: this.signOut,
-                createCourse: this.createCourse
+                // createCourse: this.createCourse
             }
         }
 
@@ -49,18 +49,18 @@ export class Provider extends Component {
         this.setState({ authenticatedUser: null })
     }
 
-    createCourse = async (course, encodedCredentials) => {
-        const newCourse = await this.data.createCourse(course, encodedCredentials)
-        console.log(newCourse)
-        if (newCourse !== null) {
-            this.setState(() => {
-                return {
-                    // authenticatedUser: user,
-                    newCourse: newCourse
-                }
-            })
-        }    
-    }
+    // createCourse = async (course, encodedCredentials) => {
+    //     const newCourse = await this.data.createCourse(course, encodedCredentials)
+    //     console.log(newCourse)
+    //     if (newCourse !== null) {
+    //         this.setState(() => {
+    //             return {
+    //                 // authenticatedUser: user,
+    //                 newCourse: newCourse
+    //             }
+    //         })
+    //     }    
+    // }
 }
 
 export const Consumer = Context.Consumer;

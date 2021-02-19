@@ -32,7 +32,7 @@ export default () => (
       <HeaderWithContext />
       <Switch>
         {/* <PrivateRoute path="/authenticated" component={Authenticated} /> */}
-        <PrivateRoute path="/courses/{id}/update" component={UpdateCourseWithContext} />
+        <PrivateRoute path="/courses/:id/update" component={UpdateCourseWithContext} />
         <PrivateRoute path="/courses/create" component={CreateCourseWithContext} />
         <Route path="/courses/:id" component={CourseDetailsWithContext} />
         <Route path="/signin" component={UserSignInWithContext} />
