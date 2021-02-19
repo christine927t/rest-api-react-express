@@ -87,21 +87,20 @@ export default class CreateCourse extends Component {
         const authUser = context.authenticatedUser;
         const authUseremail = authUser.emailAddress;
         const authUserpass = authUser.password;
-        const encodedCredentials =  { authUseremail, authUserpass };
-        const { title, description, estimatedTime, materialsNeeded, } = this.state;
-        const course = { title, description, estimatedTime, materialsNeeded }
+        const userId = authUser.id;
+        console.log(userId)
+        const { title, description, estimatedTime, materialsNeeded } = this.state;
+        const course = { title, description, estimatedTime, materialsNeeded, userId }
         console.log(course);
         console.log(this.state.errors)
 
-        context.data.createCourse(course, encodedCredentials)
+        context.data.createCourse(course, authUseremail, authUserpass)
             .then(errors => {
                 if (errors.length) {
-                    console.log(course)
-                    console.log(encodedCredentials)
                     this.setState({errors})
                         return { errors: ['Course was not created'] }
                 } else {
-                    this.props.history.push('/courses');
+                    this.props.history.push('/');
                     console.log(`SUCCESS! course ${title} has been created!`);
                 }
             })

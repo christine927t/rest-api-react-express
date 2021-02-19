@@ -1,7 +1,7 @@
 // import { authenticateUser } from '../../api/routes';
 import config from './config';
 
-export default class Data {
+export default class Data {    
     api(path, method = 'GET', body = null, requiresAuth = false, credentials = null) {
         console.log(credentials)
         const url = config.apiBaseUrl + path;
@@ -49,8 +49,8 @@ export default class Data {
         }
     }
 
-    async createCourse(course, encodedCredentials) {
-        const response = await this.api('/courses', 'POST', course, true, { encodedCredentials });
+    async createCourse(course, emailAddress, password) {
+        const response = await this.api('/courses', 'POST', course, true, { emailAddress, password });
         if(response.status === 201) {
             console.log('Course successfully created');
             return [];
@@ -63,8 +63,9 @@ export default class Data {
         }
     }
 
-    async deleteCourse() {
-        const response = await this.api('/courses/:id', 'DELETE', null)
+    async deleteCourse(id, emailAddress, password) {
+        const response = await this.api(`/courses/${id}`, 'DELETE', null, true, { emailAddress, password })
+        console.log(id)
         if (response.status === 204){
             console.log('Course has been deleted');
         } else if (response.status === 400) {

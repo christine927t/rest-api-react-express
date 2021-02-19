@@ -175,6 +175,8 @@ router.put('/courses/:id', this.authenticateUser, asyncHandler(async (req, res, 
 
 //deletes a currently existing course
 router.delete('/courses/:id', this.authenticateUser, asyncHandler(async (req, res, next) => {
+    console.log(user.id)
+    console.log(req.params.id)
     if (user.id == req.params.id) {
         try {
             let course = await Course.findByPk(req.params.id);
