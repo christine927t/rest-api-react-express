@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Data from './Data';
+import Cookies from 'js-cookie';
 
 const Context = React.createContext();
 
@@ -10,8 +11,7 @@ export class Provider extends Component {
     }
     
     state = {
-        authenticatedUser: null,
-        courses: []
+        authenticatedUser: Cookies.getJSON('authenticatedUser') || null,
     }
 
     render() {
@@ -41,25 +41,20 @@ export class Provider extends Component {
                     authenticatedUser: user,
                 } 
             })
+            //Set cookie
+            Cookies.set('authenticatedUser', JSON.stringify(user), {expires: 1});
         }
     }
 
     signOut = () => {
-        this.setState({ authenticatedUser: null })
+        this.setState(() => {
+            return { 
+                authenticatedUser: null 
+            }
+        })
+        //Removes cookie containing user information
+        Cookies.remove('authenticatedUser');
     }
-
-    // createCourse = async (course, encodedCredentials) => {
-    //     const newCourse = await this.data.createCourse(course, encodedCredentials)
-    //     console.log(newCourse)
-    //     if (newCourse !== null) {
-    //         this.setState(() => {
-    //             return {
-    //                 // authenticatedUser: user,
-    //                 newCourse: newCourse
-    //             }
-    //         })
-    //     }    
-    // }
 }
 
 export const Consumer = Context.Consumer;

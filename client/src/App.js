@@ -1,5 +1,3 @@
-// import logo from './logo.svg';
-// import '././styles/global.css';
 import React from 'react';
 import {
   BrowserRouter as Router,
@@ -16,6 +14,9 @@ import UpdateCourse from './components/UpdateCourse';
 import UserSignIn from './components/UserSignIn';
 import UserSignOut from './components/UserSignOut';
 import UserSignUp from './components/UserSignUp';
+import NotFound from './components/NotFound';
+import Forbidden from './components/Forbidden';
+import UnhandledError from './components/UnhandledError';
 
 import withContext from './Context';
 const UserSignInWithContext = withContext(UserSignIn);
@@ -26,12 +27,11 @@ const CourseDetailsWithContext = withContext(CourseDetails);
 const CreateCourseWithContext = withContext(CreateCourse);
 const UpdateCourseWithContext = withContext(UpdateCourse)
 
-export default () => (
+const App = () => (
   <Router>
     <div>
       <HeaderWithContext />
       <Switch>
-        {/* <PrivateRoute path="/authenticated" component={Authenticated} /> */}
         <PrivateRoute path="/courses/:id/update" component={UpdateCourseWithContext} />
         <PrivateRoute path="/courses/create" component={CreateCourseWithContext} />
         <Route path="/courses/:id" component={CourseDetailsWithContext} />
@@ -39,8 +39,13 @@ export default () => (
         <Route path="/signup" component={UserSignUpWithContext} />
         <Route path="/signout" component={UserSignOutWithContext} />
         <Route path="/courses" Redirect to="/" component={Courses}/>
+        <Route path="/notfound" component={NotFound}/>
+        <Route path="/forbidden" component={Forbidden}/>
+        <Route path="/error" component={UnhandledError}/>
         <Route exact path="/" component={Courses} />
       </Switch>
     </div>
   </Router>
 )
+
+export default App;

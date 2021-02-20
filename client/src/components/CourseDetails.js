@@ -1,14 +1,8 @@
-// This component provides the "Course Detail" screen by retrieving 
-// the detail for a course from the REST API's /api/courses/:id route 
-// and rendering the course. The component also renders a "Delete Course" 
-// button that when clicked should send a DELETE request to the REST 
-// API's /api/courses/:id route in order to delete a course. This component 
-// also renders an "Update Course" button for navigating to the "Update Course" 
-// screen.
 
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import ReactMarkdown from 'react-markdown';
 
 export default class CourseDetails extends Component {
     state = {
@@ -22,27 +16,24 @@ export default class CourseDetails extends Component {
         const authUser = context.authenticatedUser;
         const authUseremail = authUser.emailAddress;
         const authUserpass = authUser.password;
-        const userId = authUser.id;
-        const { title, description, estimatedTime, materialsNeeded } = this.state;
-        const course = { title, description, estimatedTime, materialsNeeded, userId }
+        const { title } = this.state;
         const id = this.props.match.params.id;
         console.log(id)
 
         context.data.deleteCourse(id, authUseremail, authUserpass)
             .then(errors => {
-                if (errors.length) {
+                if (errors) {
                     this.setState({errors})
-                        return { errors: [`Course ${title} was deleted from database`] }
+                        return { errors: [`Course ${title} was NOT deleted from database`] }
                 } else {
                     this.props.history.push('/');
-                    console.log(`SUCCESS! course ${title} was NOT deleted!`);
+                    alert(`SUCCESS! course ${title} has been deleted!`);
                 }
             })
             .catch(err => {
                 console.log(err);
                 this.props.history.push('/error')
             })
-        
     }
 
     componentDidMount() {
@@ -58,7 +49,10 @@ export default class CourseDetails extends Component {
     render() {        
         const { context } = this.props;
         const authUser = context.authenticatedUser;
-       if (authUser) {console.log(authUser.id)}
+        const estimatedTimeMarkdown = ` #### Estimated Time \n\n ### ${this.state.course.estimatedTime}`
+        const materialsNeededMarkdown = `* ${this.state.course.materialsNeeded}`
+
+        if (authUser) {console.log(authUser.id)}
         return (
             <div>
                 <div className="actions--bar">
@@ -89,13 +83,12 @@ export default class CourseDetails extends Component {
                         <div className="course--stats">
                             <ul className="course--stats--list">
                                 <li className="course--stats--list--item">
-                                    <h4>Estimated Time</h4>
-                                    <h3>{this.state.course.estimatedTime}</h3>
+                                    <ReactMarkdown source={estimatedTimeMarkdown}/>
                                 </li>
                                 <li className="course--stats--list--item">
                                     <h4>Materials Needed</h4>
                                     <ul>
-                                        <li>{this.state.course.materialsNeeded}</li>
+                                        <ReactMarkdown source={materialsNeededMarkdown}/>
                                     </ul>
                                 </li>
                             </ul>
@@ -105,6 +98,4 @@ export default class CourseDetails extends Component {
             </div>
         )
     }
-
-
 }

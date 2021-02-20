@@ -149,15 +149,17 @@ router.post('/courses', this.authenticateUser, asyncHandler(async (req, res, nex
 
 //updates a currently existing course
 router.put('/courses/:id', this.authenticateUser, asyncHandler(async (req, res, next) => {
-    if (user.id == req.params.id) {
         try {
             let course = await Course.findByPk(req.params.id);
-            if (course) {
+            if (user.id == course.userId) {
+                console.log(user.id)
+                console.log(course.userId)
                 await course.update(req.body);
                 console.log(`Course "${req.body.title}" updated successfully!`);
                 res.status(204).end();
             } else {
-                res.status(400).json({ "message": "Course not found" })
+                console.log('User not authorized to delete this course')
+                res.status(403).end();            
             }
         } catch (error) {
             console.log('Error: ', error.name)
@@ -168,22 +170,22 @@ router.put('/courses/:id', this.authenticateUser, asyncHandler(async (req, res, 
                 throw error;
             }
         }
-    } else {
-        res.status(403).end();
-    }
 }));
 
 //deletes a currently existing course
 router.delete('/courses/:id', this.authenticateUser, asyncHandler(async (req, res, next) => {
-    console.log(user.id)
-    console.log(req.params.id)
-    if (user.id == req.params.id) {
         try {
             let course = await Course.findByPk(req.params.id);
-            if (course) {
+            if (user.id == course.userId) {
+                console.log(user.id)
+                console.log(course.userId)
                 await course.destroy();
-                console.log("Course has been deleted!");
+                console.log(`Course ${req.body.title} has been updated!`);
                 res.status(204).end();
+            } 
+            else {
+                console.log('User not authorized to delete this course')
+                res.status(403).end();
             }
         } catch (error) {
             console.log('Error: ', error.name)
@@ -194,9 +196,6 @@ router.delete('/courses/:id', this.authenticateUser, asyncHandler(async (req, re
                 throw error;
             }
         }
-    } else {
-        res.status(403).end();
-    }
 }))
 
 module.exports = router;
