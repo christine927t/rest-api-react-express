@@ -71,6 +71,7 @@ export default class CreateCourse extends Component {
         )
     }
 
+    //when the value of the input field changes, the [name]: value pair is updated accordingly
     change = (event) => {
         const name = event.target.name;
         const value = event.target.value;
@@ -88,12 +89,10 @@ export default class CreateCourse extends Component {
         const authUseremail = authUser.emailAddress;
         const authUserpass = authUser.password;
         const userId = authUser.id;
-        console.log(userId)
         const { title, description, estimatedTime, materialsNeeded } = this.state;
         const course = { title, description, estimatedTime, materialsNeeded, userId }
-        console.log(course);
-        console.log(this.state.errors)
 
+        //triggers createCourse API call on submit
         context.data.createCourse(course, authUseremail, authUserpass)
             .then(errors => {
                 if (errors.length) {

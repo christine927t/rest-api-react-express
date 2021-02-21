@@ -77,6 +77,7 @@ export default class UserSignUp extends Component {
         }
         console.log(user)
 
+        //triggers createUser API on submit
         context.data.createUser(user)
             .then(errors => {
                 if (errors.length) {

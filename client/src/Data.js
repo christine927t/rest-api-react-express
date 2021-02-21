@@ -1,4 +1,3 @@
-// import { authenticateUser } from '../../api/routes';
 import config from './config';
 
 export default class Data {    
@@ -23,6 +22,7 @@ export default class Data {
         return fetch(url, options)
     }
 
+    //makes GET request to API to request user emailAddress and password
     async getUser(emailAddress, password) {
         const response = await this.api('/users', 'GET', null, true, { emailAddress, password });
         if (response.status === 200) {
@@ -30,11 +30,14 @@ export default class Data {
             return response.json().then(data => data)
         } else if (response.status === 401) {
             return null;
+        } else if (response.status === 500) {    
+            this.props.history.push('/error')
         } else {
             throw new Error();
         }
     }
 
+    //makes POST request to API to create a new user
     async createUser(user) {
         const response = await this.api('/users', 'POST', user);
         if (response.status === 201) {
@@ -44,11 +47,14 @@ export default class Data {
             return response.json().then(data => {
                 return data.errors;
             })
+        } else if (response.status === 500) {    
+            this.props.history.push('/error')
         } else {
             throw new Error();
         }
     }
 
+    //makes POST request to API to create a new course
     async createCourse(course, emailAddress, password) {
         const response = await this.api('/courses', 'POST', course, true, { emailAddress, password });
         if(response.status === 201) {
@@ -58,11 +64,14 @@ export default class Data {
             return response.json().then(data => {
                 return data.errors;
             })
+        } else if (response.status === 500) {    
+            this.props.history.push('/error')
         } else {
             throw new Error();
         }
     }
 
+    //makes DELETE request to API to delete course that matches ID in the URL
     async deleteCourse(id, emailAddress, password) {
         const response = await this.api(`/courses/${id}`, 'DELETE', null, true, { emailAddress, password })
         if (response.status === 204){
@@ -71,11 +80,14 @@ export default class Data {
             return response.json().then(data => {
                 return data.errors;
             })
+        } else if (response.status === 500) {    
+            this.props.history.push('/error')
         } else {
             throw new Error();
         }
     }
 
+    //makes PUT request to API to update course information for a course that matches ID in the url
     async updateCourse(id, course, emailAddress, password) {
         const response = await this.api(`/courses/${id}`, 'PUT', course, true, { emailAddress, password })
         if (response.status === 204){
@@ -84,6 +96,8 @@ export default class Data {
             return response.json().then(data => {
                 return data.errors;
             })
+        } else if (response.status === 500) {    
+            this.props.history.push('/error')
         } else {
             throw new Error();
         }

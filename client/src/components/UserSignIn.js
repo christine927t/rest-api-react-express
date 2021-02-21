@@ -56,9 +56,10 @@ export default class UserSignIn extends Component {
         })
     }
 
+    //triggers signIn method on submit
     submit = () => {
         const { context } = this.props;
-        const { from } = this.props.location.state || { from: { pathname: '/signin' }}
+        const { from } = this.props.location.state || { from: { pathname: '/' }}
         const { emailAddress, password } = this.state;
         context.actions.signIn(emailAddress, password)
             .then(user => {
@@ -67,7 +68,8 @@ export default class UserSignIn extends Component {
                         return { errors: ['Sign-in was unsuccessful'] }
                     })
                 } else {
-                    this.props.history.push(from);
+                    console.log(this.props.history)
+                    this.props.history.push(from); //redirects user to previous page or home page
                     console.log(`SUCCESS! ${emailAddress} is now signed in!`);
                 }
             })

@@ -19,19 +19,23 @@ export default class UpdateCourse extends Component {
         course: [],
         user: []
     }
-
+    //when component first mounts(or on reload), makes axios call to API to retrieve the course that matches the ID in the URL
     componentDidMount() {
-            axios.get(`http://localhost:5000/api/courses/${this.props.match.params.id}`)
-              .then(data => {
+        axios.get(`http://localhost:5000/api/courses/${this.props.match.params.id}`)
+            .then(data => {
                 this.setState({ course: data.data, user: data.data.User });
-              })
-                .catch(err => {
+            })
+            .catch(err => {
                 console.log(err)
-        })
+                this.props.history.push('/notfound')
+            })
     }
 
     render(){
         const { errors } = this.state; 
+        const { context } = this.props;
+        const authUser = context.authenticatedUser;
+
         return (
             <div className="bounds course--detail">
                 <h1>Update Course</h1>
@@ -47,7 +51,7 @@ export default class UpdateCourse extends Component {
                                     <div className="course--header">
                                         <h4 className="course--label">Course</h4>
                                         <div><input id="title" name="title" type="text" className="input-title course--title--input" placeholder="Course title..." value={this.state.title} onChange={this.change}/></div>
-                                        <p>By Joe Smith</p>
+                                        <p>By: {authUser.firstName} {authUser.lastName}</p>
                                     </div>
                                     <div className="course--description">
                                         <div><textarea id="description" name="description" placeholder="Course description..." value={this.state.description} onChange={this.change}></textarea></div>
@@ -95,8 +99,8 @@ export default class UpdateCourse extends Component {
         const { title, description, estimatedTime, materialsNeeded } = this.state;
         const course = { title, description, estimatedTime, materialsNeeded, userId }
         const id = this.props.match.params.id;
-        console.log(id)
 
+        //triggers updateCourse API call on submit
         context.data.updateCourse(id, course, authUseremail, authUserpass)
             .then(errors => {
                 if (errors) {
@@ -109,7 +113,7 @@ export default class UpdateCourse extends Component {
             })
             .catch(err => {
                 console.log(err);
-                this.props.history.push('/error')
+                this.props.history.push('/forbidden')
             })
     }
 

@@ -11,7 +11,7 @@ export class Provider extends Component {
     }
     
     state = {
-        authenticatedUser: Cookies.getJSON('authenticatedUser') || null,
+        authenticatedUser: Cookies.getJSON('authenticatedUser') || null, //retrieves value of the stored cookie to set initial state of authenticatedUser (or sets to null)
     }
 
     render() {
@@ -32,6 +32,7 @@ export class Provider extends Component {
         );
     }
 
+    //signIn method passes user emailAddress and password to data.getUser to authenticate user credentials via the API 
     signIn = async (emailAddress, password) => {
         const user = await this.data.getUser(emailAddress, password);
         user.password = password;
@@ -46,14 +47,16 @@ export class Provider extends Component {
         }
     }
 
-    signOut = () => {
+    //signOut method signs user out and sets authenticatedUser state back to null
+    signOut = () => { 
         this.setState(() => {
             return { 
-                authenticatedUser: null 
+                authenticatedUser: null
             }
         })
         //Removes cookie containing user information
         Cookies.remove('authenticatedUser');
+        
     }
 }
 

@@ -10,7 +10,7 @@ export default class CourseDetails extends Component {
         user: [],
         errors: [],
     }
-
+    
     handleDelete = () => {
         const { context } = this.props;
         const authUser = context.authenticatedUser;
@@ -18,8 +18,8 @@ export default class CourseDetails extends Component {
         const authUserpass = authUser.password;
         const { title } = this.state;
         const id = this.props.match.params.id;
-        console.log(id)
 
+        //calls deleteCourse API call
         context.data.deleteCourse(id, authUseremail, authUserpass)
             .then(errors => {
                 if (errors) {
@@ -27,7 +27,7 @@ export default class CourseDetails extends Component {
                         return { errors: [`Course ${title} was NOT deleted from database`] }
                 } else {
                     this.props.history.push('/');
-                    alert(`SUCCESS! course ${title} has been deleted!`);
+                    console.log(`SUCCESS! course has been deleted!`);
                 }
             })
             .catch(err => {
@@ -35,24 +35,26 @@ export default class CourseDetails extends Component {
                 this.props.history.push('/error')
             })
     }
-
+    //when component first mounts(or on reload), makes axios call to API to retrieve the course that matches the id in the URL
     componentDidMount() {
-            axios.get(`http://localhost:5000/api/${this.props.match.url}`)
-              .then(data => {
+        axios.get(`http://localhost:5000/api/${this.props.match.url}`)
+            .then(data => {
                 this.setState({ course: data.data, user: data.data.User });
-              })
-                .catch(err => {
+            })
+            .catch(err => {
                 console.log(err)
-        })
+                this.props.history.push('/notfound')
+            })
     }
 
     render() {        
         const { context } = this.props;
         const authUser = context.authenticatedUser;
+        
+        //declares markdown variables
         const estimatedTimeMarkdown = ` #### Estimated Time \n\n ### ${this.state.course.estimatedTime}`
         const materialsNeededMarkdown = `* ${this.state.course.materialsNeeded}`
 
-        if (authUser) {console.log(authUser.id)}
         return (
             <div>
                 <div className="actions--bar">

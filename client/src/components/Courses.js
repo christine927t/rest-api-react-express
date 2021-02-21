@@ -12,7 +12,7 @@ export default class Courses extends Component {
     state = {
         courses: []
     }
-
+    //when component first mounts(or on reload), makes axios call to API to retrieve the list of courses in the database
     componentDidMount() {
             axios.get('http://localhost:5000/api/courses')
               .then(data => {
@@ -23,7 +23,22 @@ export default class Courses extends Component {
                 console.log(err)
             })
     }
+    //when component updates, makes axios call to API to retrieve the list of courses in the database
+    componentDidUpdate(nextProps) {
+        if(nextProps.location.pathname !== this.props.location.pathname){
+            axios.get('http://localhost:5000/api/courses')
+            .then(data => {
+                this.setState({ courses: data.data, user: data.data.User });
+                console.log(this.state.courses)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        }
+    }
+
     render() {
+        //renders a div, h4 and h3 element for each course that the API retrieves from the database
         const results = this.state.courses;
         let courses = results.map(course => 
             <React.Fragment key={course.id}>
@@ -35,7 +50,6 @@ export default class Courses extends Component {
         )
 
         return (
-
             <div className="bounds">
                     {courses}
                 <div className="grid-33"><Link className="course--module course--add--module" to="/courses/create">
