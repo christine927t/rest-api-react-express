@@ -9,4 +9,4 @@ npm run seed
 npm start
 ```
 
-Then navigate to http://http://localhost:3000/ to start interacting with my app!
+Then navigate to http://localhost:3000/ to start interacting with my app!
