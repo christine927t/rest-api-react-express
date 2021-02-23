@@ -13,17 +13,35 @@ export default class UpdateCourse extends Component {
         course: [],
         user: []
     }
+    
 
     //when component first mounts(or on reload), makes axios call to API to retrieve the course that matches the ID in the URL
     componentDidMount() {
-        axios.get(`http://localhost:5000/api/courses/${this.props.match.params.id}`)
-            .then(data => {
-                this.setState({ course: data.data, user: data.data.User });
-            })
-            .catch(err => {
-                console.log(err)
-                this.props.history.push('/notfound')
-            })
+        const { context } = this.props
+        const authUser = context.authenticatedUser;
+        const authUseremail = authUser.emailAddress;
+        const authUserpass = authUser.password;
+        const id = this.props.match.params.id;
+
+        context.data.getCourse(id, authUseremail, authUserpass)
+        .then(data => {
+            this.setState({ course: data.data, user: data.data.User });
+            console.log(user)
+            console.log(course)
+            console.log(course.data)
+        })
+        .catch(err => {
+            console.log(err);
+            this.props.history.push('/forbidden')
+        })
+    //     axios.get(`http://localhost:5000/api/courses/${this.props.match.params.id}`)
+    //         .then(data => {
+    //             this.setState({ course: data.data, user: data.data.User });
+    //         })
+    //         .catch(err => {
+    //             console.log(err)
+    //             this.props.history.push('/notfound')
+    //         })
     }
 
     render(){
@@ -36,14 +54,15 @@ export default class UpdateCourse extends Component {
 
         const { errors } = this.state; 
         const { context } = this.props;
+        // console.log(this.state.course)
+
         const authUser = context.authenticatedUser;
 
         return (
             <div className="bounds course--detail">
-            
                 <h1>Update Course</h1>
-                {authUser && authUser.id === this.state.course.userId ?
-                <Form
+                {/* {authUser && authUser.id === this.state.course.userId ? */}
+                {/* <Form
                     cancel={this.cancel}
                     errors={errors}
                     submit={this.submit}
@@ -78,10 +97,10 @@ export default class UpdateCourse extends Component {
                             </div>
                         </React.Fragment>
                     )}
-                />
-                :
+                /> */}
+                {/* :
                     <Redirect to="/forbidden" />
-                }
+                } */}
             </div>
         )
     }

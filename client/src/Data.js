@@ -102,4 +102,19 @@ export default class Data {
             throw new Error();
         }
     }
+
+    async getCourse(id, course, emailAddress, password) {
+        const response = await this.api(`/courses/${id}`, 'GET', course, true, { emailAddress, password })
+        if (response.status === 200){
+            console.log(course)
+        } else if (response.status === 400) {
+            return response.json().then(data => {
+                return data.errors;
+            })
+        } else if (response.status === 500) {    
+            this.props.history.push('/error')
+        } else {
+            throw new Error();
+        }
+    }
 }
