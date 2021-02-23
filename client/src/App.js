@@ -7,7 +7,7 @@ import {
 import PrivateRoute from './PrivateRoute';
 
 import Header from './components/Header';
-import CourseDetails from './components/CourseDetails';
+import CourseDetail from './components/CourseDetail';
 import Courses from './components/Courses';
 import CreateCourse from './components/CreateCourse';
 import UpdateCourse from './components/UpdateCourse';
@@ -23,7 +23,7 @@ const UserSignInWithContext = withContext(UserSignIn); //gives context to each c
 const UserSignUpWithContext = withContext(UserSignUp);
 const UserSignOutWithContext = withContext(UserSignOut);
 const HeaderWithContext = withContext(Header);
-const CourseDetailsWithContext = withContext(CourseDetails);
+const CourseDetailWithContext = withContext(CourseDetail);
 const CreateCourseWithContext = withContext(CreateCourse);
 const UpdateCourseWithContext = withContext(UpdateCourse)
 
@@ -34,7 +34,7 @@ const App = () => (
       <Switch>
         <PrivateRoute path="/courses/:id/update" component={UpdateCourseWithContext} />
         <PrivateRoute path="/courses/create" component={CreateCourseWithContext} />
-        <Route path="/courses/:id" component={CourseDetailsWithContext} />
+        <Route path="/courses/:id" component={CourseDetailWithContext} />
         <Route path="/signin" component={UserSignInWithContext} />
         <Route path="/signup" component={UserSignUpWithContext} />
         <Route path="/signout" component={UserSignOutWithContext} />

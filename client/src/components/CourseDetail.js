@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 
-export default class CourseDetails extends Component {
+export default class CourseDetail extends Component {
     state = {
         course: [],
         user: [],

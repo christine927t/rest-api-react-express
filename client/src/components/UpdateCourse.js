@@ -1,13 +1,7 @@
-// This component provides the "Update Course" screen by rendering 
-// a form that allows a user to update one of their existing courses. 
-// The component also renders an "Update Course" button that when 
-// clicked sends a PUT request to the REST API's /api/courses/:id 
-// route. This component also renders a "Cancel" button that returns 
-// the user to the "Course Detail" screen.
-
 import React, { Component} from 'react';
 import axios from 'axios';
 import Form from './Form';
+import {Redirect} from 'react-router-dom'
 
 export default class UpdateCourse extends Component {
     state = {
@@ -19,6 +13,7 @@ export default class UpdateCourse extends Component {
         course: [],
         user: []
     }
+
     //when component first mounts(or on reload), makes axios call to API to retrieve the course that matches the ID in the URL
     componentDidMount() {
         axios.get(`http://localhost:5000/api/courses/${this.props.match.params.id}`)
@@ -32,13 +27,22 @@ export default class UpdateCourse extends Component {
     }
 
     render(){
+        // const {
+        //     title,
+        //     description,
+        //     estimatedTime,
+        //     materialsNeeded,
+        // } = this.state; 
+
         const { errors } = this.state; 
         const { context } = this.props;
         const authUser = context.authenticatedUser;
 
         return (
             <div className="bounds course--detail">
+            
                 <h1>Update Course</h1>
+                {authUser && authUser.id === this.state.course.userId ?
                 <Form
                     cancel={this.cancel}
                     errors={errors}
@@ -50,11 +54,11 @@ export default class UpdateCourse extends Component {
                                 <div className="grid-66">
                                     <div className="course--header">
                                         <h4 className="course--label">Course</h4>
-                                        <div><input id="title" name="title" type="text" className="input-title course--title--input" placeholder="Course title..." value={this.state.title} onChange={this.change}/></div>
+                                        <div><input id="title" name="title" type="text" className="input-title course--title--input" placeholder={this.state.course.title} value={this.state.title} onChange={this.change}/></div>
                                         <p>By: {authUser.firstName} {authUser.lastName}</p>
                                     </div>
                                     <div className="course--description">
-                                        <div><textarea id="description" name="description" placeholder="Course description..." value={this.state.description} onChange={this.change}></textarea></div>
+                                        <div><textarea id="description" name="description" placeholder={this.state.course.description} value={this.state.description} onChange={this.change}></textarea></div>
                                     </div>
                                 </div>
                                 <div className="grid-25 grid-right">
@@ -62,11 +66,11 @@ export default class UpdateCourse extends Component {
                                         <ul className="course--stats--list">
                                             <li className="course--stats--list--item">
                                                 <h4>Estimated Time</h4>
-                                                <div><input id="estimatedTime" name="estimatedTime" type="text" className="course--time--input" placeholder="Hours" value={this.state.estimatedTime}  onChange={this.change}/></div>
+                                                <div><input id="estimatedTime" name="estimatedTime" type="text" className="course--time--input" placeholder={this.state.course.estimatedTime} value={this.state.estimatedTime} onChange={this.change}/></div>
                                             </li>
                                             <li className="course--stats--list--item">
                                                 <h4>Materials Needed</h4>
-                                                <div><textarea id="materialsNeeded" name="materialsNeeded" placeholder="List materials..." value={this.state.materialsNeeded} onChange={this.change}></textarea></div>
+                                                <div><textarea id="materialsNeeded" name="materialsNeeded" placeholder={this.state.course.materialsNeeded} value={this.state.materialsNeeded} onChange={this.change}></textarea></div>
                                             </li>
                                         </ul>
                                     </div>
@@ -75,19 +79,32 @@ export default class UpdateCourse extends Component {
                         </React.Fragment>
                     )}
                 />
+                :
+                    <Redirect to="/forbidden" />
+                }
             </div>
         )
     }
 
     change = (event) => {
         const name = event.target.name;
+        const placeholder = event.target.placeholder;
         const value = event.target.value;
-
-        this.setState(() => {
-            return {
-                [name]: value
-            }
-        })
+        console.log(`${placeholder} is the placeholder`)
+        console.log(`${value} is the value`)
+        if (value !== placeholder){
+            this.setState(() => {
+                return {
+                    [name]: value
+                }
+            })
+        } else {
+            this.setState(() => {
+                return {
+                    [name]: placeholder
+                }
+            })
+        }
     }
 
     submit = () => {
@@ -107,6 +124,11 @@ export default class UpdateCourse extends Component {
                     this.setState({errors})
                         return { errors: [`Course ${title} was NOT updated in database`] }
                 } else {
+                    // this.setState(() =>{
+                    //     return {
+                    //         title: newTitle
+                    //     }
+                    // })
                     this.props.history.push('/');
                     console.log(`SUCCESS! course ${title} has been updated!`);
                 }
@@ -118,6 +140,8 @@ export default class UpdateCourse extends Component {
     }
 
     cancel = () => {
-        this.props.history.push('/');
+        const { from } = this.props.location.state || { from: { pathname: '/' }}
+        this.props.history.push(from); //redirects user to previous page or home page
+
     }
 }
