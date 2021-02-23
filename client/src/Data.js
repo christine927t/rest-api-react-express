@@ -1,6 +1,6 @@
 import config from './config';
 
-export default class Data {    
+export default class Data {
     api(path, method = 'GET', body = null, requiresAuth = false, credentials = null) {
         console.log(credentials)
         const url = config.apiBaseUrl + path;
@@ -30,7 +30,7 @@ export default class Data {
             return response.json().then(data => data)
         } else if (response.status === 401) {
             return null;
-        } else if (response.status === 500) {    
+        } else if (response.status === 500) {
             this.props.history.push('/error')
         } else {
             throw new Error();
@@ -47,7 +47,7 @@ export default class Data {
             return response.json().then(data => {
                 return data.errors;
             })
-        } else if (response.status === 500) {    
+        } else if (response.status === 500) {
             this.props.history.push('/error')
         } else {
             throw new Error();
@@ -57,14 +57,14 @@ export default class Data {
     //makes POST request to API to create a new course
     async createCourse(course, emailAddress, password) {
         const response = await this.api('/courses', 'POST', course, true, { emailAddress, password });
-        if(response.status === 201) {
+        if (response.status === 201) {
             console.log('Course successfully created');
             return [];
         } else if (response.status === 400) {
             return response.json().then(data => {
                 return data.errors;
             })
-        } else if (response.status === 500) {    
+        } else if (response.status === 500) {
             this.props.history.push('/error')
         } else {
             throw new Error();
@@ -74,13 +74,13 @@ export default class Data {
     //makes DELETE request to API to delete course that matches ID in the URL
     async deleteCourse(id, emailAddress, password) {
         const response = await this.api(`/courses/${id}`, 'DELETE', null, true, { emailAddress, password })
-        if (response.status === 204){
+        if (response.status === 204) {
             console.log('Course has been deleted');
         } else if (response.status === 400) {
             return response.json().then(data => {
                 return data.errors;
             })
-        } else if (response.status === 500) {    
+        } else if (response.status === 500) {
             this.props.history.push('/error')
         } else {
             throw new Error();
@@ -90,28 +90,29 @@ export default class Data {
     //makes PUT request to API to update course information for a course that matches ID in the url
     async updateCourse(id, course, emailAddress, password) {
         const response = await this.api(`/courses/${id}`, 'PUT', course, true, { emailAddress, password })
-        if (response.status === 204){
+        if (response.status === 204) {
             console.log('Course has been updated');
         } else if (response.status === 400) {
             return response.json().then(data => {
                 return data.errors;
             })
-        } else if (response.status === 500) {    
+        } else if (response.status === 500) {
             this.props.history.push('/error')
         } else {
             throw new Error();
         }
     }
 
-    async getCourse(id, course, emailAddress, password) {
-        const response = await this.api(`/courses/${id}`, 'GET', course, true, { emailAddress, password })
-        if (response.status === 200){
-            console.log(course)
+    async getCourse(id, emailAddress, password) {
+        const response = await this.api(`/courses/${id}`, 'GET', null, true, { emailAddress, password })
+        if (response.status === 200) {
+            console.log('Fetched course!');
+            return response.json().then(data => data)
         } else if (response.status === 400) {
             return response.json().then(data => {
                 return data.errors;
             })
-        } else if (response.status === 500) {    
+        } else if (response.status === 500) {
             this.props.history.push('/error')
         } else {
             throw new Error();
