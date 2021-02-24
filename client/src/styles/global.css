@@ -584,6 +584,9 @@ p {
 .signin,
 .signup {
   margin-top: 60px;
+  border: 1px solid #ccc4d8;
+  border-radius: 8px;
+
 }
 
 /* line 468, ../sass/global.sass */
