@@ -105,6 +105,7 @@ export default class Data {
 
     async getCourse(id, emailAddress, password) {
         const response = await this.api(`/courses/${id}`, 'GET', null, true, { emailAddress, password })
+        console.log(response.status)
         if (response.status === 200) {
             console.log('Fetched course!');
             return response.json().then(data => data)

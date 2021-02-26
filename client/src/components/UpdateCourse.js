@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import Form from './Form';
-import { Redirect } from 'react-router-dom'
 
 export default class UpdateCourse extends Component {
     state = {
@@ -15,9 +13,7 @@ export default class UpdateCourse extends Component {
         user: []
     }
 
-
-
-    //when component first mounts(or on reload), makes axios call to API to retrieve the course that matches the ID in the URL
+    //when component first mounts(or on reload), makes call to API via context to retrieve the course that matches the ID in the URL
     componentDidMount() {
 
         const { context } = this.props
@@ -25,43 +21,37 @@ export default class UpdateCourse extends Component {
         const authUseremail = authUser.emailAddress;
         const authUserpass = authUser.password;
         const id = this.props.match.params.id;
-        // {
-        // authUser && authUser.id === this.state.userId ?
 
         context.data.getCourse(id, authUseremail, authUserpass)
             .then(data => {
-                this.setState({
-                    title: data.title,
-                    description: data.description,
-                    estimatedTime: data.estimatedTime,
-                    materialsNeeded: data.materialsNeeded,
-                    userId: data.userId,
-                    user: data.User
-                });
-                console.log(this.state)
-                console.log(this.state.user)
+                if (authUser.id !== data.userId){
+                    this.props.history.push('/forbidden')
+                }
+                else {
+                    this.setState({
+                        title: data.title,
+                        description: data.description,
+                        estimatedTime: data.estimatedTime,
+                        materialsNeeded: data.materialsNeeded,
+                        userId: data.userId,
+                        user: data.User
+                    });
+                }
             })
             .catch(err => {
                 console.log(err);
                 this.props.history.push('/forbidden')
             })
-        //     :
-        //     <Redirect to="/forbidden" />
-        // }
     }
 
     render() {
         const { errors } = this.state;
         const { context } = this.props;
         const authUser = context.authenticatedUser;
-        console.log(authUser.id)
-        console.log(authUser)
-        console.log(this.state.userId)
 
         return (
             <div className="bounds course--detail">
                 <h1>Update Course</h1>
-                {authUser && authUser.id === this.state.userId ?
                     <Form
                         cancel={this.cancel}
                         errors={errors}
@@ -98,11 +88,6 @@ export default class UpdateCourse extends Component {
                             </React.Fragment>
                         )}
                     />
-                    :
-                    <React.Fragment>
-                        <Redirect to="/forbidden" />
-                    </React.Fragment>
-                }
             </div>
         )
     }
@@ -148,8 +133,7 @@ export default class UpdateCourse extends Component {
     }
 
     cancel = () => {
-        const { from } = this.props.location.state || { from: { pathname: '/' } }
-        this.props.history.push(from); //redirects user to previous page or home page
-
+        //redirects user to previous page
+        this.props.history.push(this.props.history.go(-1)); 
     }
 }

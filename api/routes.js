@@ -93,6 +93,7 @@ router.post('/users', asyncHandler(async (req, res, next) => {
 //--------COURSE routes--------//
 //gets a list of all courses
 router.get('/courses', asyncHandler(async (req, res, next) => {
+    // throw new Error(500);
     let courses = await Course.findAll({
         attributes: {
             exclude: ['createdAt', 'updatedAt']
