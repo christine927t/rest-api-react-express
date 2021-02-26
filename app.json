@@ -1,0 +1,42 @@
+{
+    "name": "React Course Directory",
+    "keywords": [
+        "React",
+        "JavaScript",
+        "HTML",
+        "CSS",
+        "Node.js",
+        "Express"
+    ],
+    "formation": {
+        "web": {
+            "quantity": 1,
+            "size": "standard-1x"
+        }
+    },
+    "addons": [
+        "openredis",
+        {
+            "plan": "mongolab:shared-single-small",
+            "as": "MONGO"
+        },
+        {
+            "plan": "heroku-postgresql",
+            "options": {
+                "version": "9.5"
+            }
+        }
+    ],
+    "buildpacks": [
+        {
+            "url": "https://github.com/heroku/heroku-buildpack-nodejs#latest"
+        }
+    ],
+    "environments": {
+        "test": {
+            "scripts": {
+                "test": "bundle exec rake test"
+            }
+        }
+    }
+}
