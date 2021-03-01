@@ -587,8 +587,12 @@ p {
   padding: 7px;
   border: 1px solid #923601;
   border-radius: 8px;
-  margin-right: 10px;
+  /* margin-right: 10px; */
   color:#923601
+}
+
+a.signin{
+  margin-right: 20px;
 }
 
 /* line 468, ../sass/global.sass */
