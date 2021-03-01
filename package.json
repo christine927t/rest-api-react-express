@@ -4,6 +4,7 @@
   },
   "dependencies": {
     "client": "file:./client",
+    "concurrently": "6.0.0",
     "api": "file:./api"
   },
   "scripts": {
