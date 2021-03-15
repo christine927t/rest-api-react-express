@@ -11,10 +11,9 @@
     "start": "concurrently 'cd api && npm start' 'cd client && npm start'"
   },
   "heroku-postbuild": "concurrently 'cd api && npm start' 'cd client && npm start'",
-
   "buildpacks": [
     {
-        "url": "https://github.com/heroku/heroku-buildpack-nodejs#latest"
+      "url": "https://github.com/heroku/heroku-buildpack-nodejs#latest"
     }
-]
+  ]
 }
