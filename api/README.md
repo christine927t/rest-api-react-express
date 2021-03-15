@@ -12,3 +12,5 @@ npm start
 
 Lastly, in Postman, please import the `RESTAPI.postman_collection.json` file which is a collection of Postman requests that you can use to test and explore the API.
 
+##updating readme
+

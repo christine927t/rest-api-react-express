@@ -14,8 +14,8 @@ export default class Courses extends Component {
     }
     //when component first mounts(or on reload), makes axios call to API to retrieve the list of courses in the database
     componentDidMount() {
-            // axios.get('http://localhost:5000/api/courses')
-            axios.get('https://react-courses-app.herokuapp.com/')
+            axios.get('http://localhost:5000/api/courses')
+            // axios.get('https://rocky-scrubland-97718.herokuapp.com/api/courses')
               .then(data => {
                 this.setState({ courses: data.data, user: data.data.User });
                 console.log(this.state.courses)
